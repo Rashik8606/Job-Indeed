@@ -35,7 +35,6 @@ urlpatterns = [
 
 
     path('create-job/',views.jobVacanciesViews,name='create-job'),
-    path('jobPost/',views.jobPost,name='jobPost'),
     path('messagepage/',views.messagePage,name='messagepage'),
     path('messages/', views.messagePage, name='messages'),
     path('job-listings/',views.job_listings,name='job_listings')

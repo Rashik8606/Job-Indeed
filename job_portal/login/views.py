@@ -53,7 +53,9 @@ def logoutview(request):
 
 @login_required
 def messagePage(request):
-    return render(request, 'message_page.html')
+    if not request.user.is_authenticated:
+        return redirect('login')
+    return render(request, 'message_page.html', {'user': request.user})
 
 
 
@@ -132,16 +134,16 @@ def index(request):
 @login_required
 def jobVacanciesViews(request):
     if request.method == 'POST':
-        form = JobVacanciesForm(request.POST)
+        form = JobVacanciesForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
+            messages.success(request, 'Job vacancy posted successfully!')
             return redirect('index')
     else:
         form = JobVacanciesForm()
     return render(request, 'jobvacancies.html', {'form': form})
 
-def jobPost(request):
-    return render(request, 'jobvacancies.html')
+
 
 class MessageListCreateView(generics.ListCreateAPIView):
     queryset = ChatMessage.objects.all()
@@ -155,4 +157,25 @@ class MessageRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
 
 
 def job_listings(request):
-    return render(request,'job_listings.html')
+    query = request.GET.get('query', '')
+    post_job = request.GET.get('post_job', '')
+    
+    if post_job == 'yes':
+        return redirect('jobPost')
+        
+    joblist = JobVacancies.objects.filter(
+        Q(jobTitle__icontains=query) |
+        Q(branchEmail__icontains=query) |
+        Q(jobQualification__icontains=query) |
+        Q(location__icontains=query) |
+        Q(contactNumber__icontains=query) |
+        Q(applicationEmailUrl__icontains=query) |
+        Q(jobSkill__icontains=query) |
+        Q(jobType__icontains=query) |
+        Q(shortDiscription__icontains=query) |
+        Q(jobCategory__icontains=query) |
+        Q(jobResposibility__icontains=query) |
+        Q(jobRequirement__icontains=query)
+    ).order_by('-last_updated')
+    
+    return render(request, 'job_listings.html', {'disp': joblist})

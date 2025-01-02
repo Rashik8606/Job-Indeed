@@ -19,7 +19,7 @@
             {% csrf_token %}
             <h2 class="text-center mb-4">Job Post</h2>
             <table>
-              {{context.as_table}}
+              {{form.as_table}}
             </table>
 
             <button type="submit" class="btn btn-primary w-100">Submit</button>
