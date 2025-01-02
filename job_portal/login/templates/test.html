@@ -1,0 +1,72 @@
+<button class="btn btn-outline-primary" onclick="openApplication()">Apply Now</button>
+
+<!-- Modal Structure -->
+<div id="applicationModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal()">&times;</span>
+        <h2>Application Form</h2>
+        <!-- You can add your application form here -->
+        <form id="applicationForm">
+            <small>Are you Conform this Job</small>
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+</div>
+
+<style>
+    .modal {
+        display: none; /* Hidden by default */
+        position: fixed; /* Stay in place */
+        z-index: 1; /* Sit on top */
+        left: 0;
+        top: 0;
+        width: 100%; /* Full width */
+        height: 100%; /* Full height */
+        overflow: auto; /* Enable scroll if needed */
+        background-color: rgb(0,0,0); /* Fallback color */
+        background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+    }
+    
+    .modal-content {
+        background-color: #fefefe;
+        margin: 15% auto; /* 15% from the top and centered */
+        padding: 20px;
+        border: 1px solid #888;
+        width: 80%; /* Could be more or less, depending on screen size */
+    }
+    
+    .close {
+        color: #aaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+    }
+    
+    .close:hover,
+    .close:focus {
+        color: black;
+        text-decoration: none;
+        cursor: pointer;
+    }
+    </style>
+
+    <script>
+        function openApplication() {
+            const modal = document.getElementById("applicationModal");
+            modal.style.display = "block"; // Show the modal
+        }
+        
+        function closeModal() {
+            const modal = document.getElementById("applicationModal");
+            modal.style.display = "none"; // Hide the modal
+        }
+        
+        // Close the modal if the user clicks anywhere outside of it
+        window.onclick = function(event) {
+            const modal = document.getElementById("applicationModal");
+            if (event.target == modal) {
+                closeModal();
+            }
+        }
+        </script>
+        

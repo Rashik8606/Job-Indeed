@@ -1,0 +1,446 @@
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/profilePicture.css' %}" />
+<div class="profile-container">
+  <div class="profile-header">
+    <div class="profile-cover">
+      <form action="{% url 'index' %}" method="post">
+        {%csrf_token %}
+        <button class="button-66" role="button">Back To Page</button>
+      </form>
+    </div>
+    <div class="profile-info">
+      <div class="profile-avatar">
+        {% if user.user_profile.profile_picture %}
+        <img src="{{ user.user_profile.profile_picture.url }}" alt="Profile Picture" />
+        {% else %}
+        <img src="/static/default_profile_picture.png" alt="Default Profile Picture" />
+        {% endif %}
+
+        <div class="edit-avatar">
+          <form id="profile-pic-form" method="post" enctype="multipart/form-data"
+            action="{% url 'update_profile_pic' %}">
+            {% csrf_token %}
+            <input type="file" id="avatar-upload" name="profilepic" hidden onchange="this.form.submit()" />
+            <label for="avatar-upload">
+              <i class="fas fa-camera">#</i>
+            </label>
+          </form>
+        </div>
+      </div>
+      <!-- <div class="profile-details">
+        <h1>{{ user.username }}</h1>
+        <p class="headline">
+          {{ user_profile.bio|default:"Add your professional summary..." }}
+        </p>
+        <p class="location">
+          <i class="fas fa-map-marker-alt"></i>
+          {{ user_profile.location|default:"Add your location" }}
+        </p>
+      </div> -->
+      <div class="profile-details">
+        <h1>{{user.username}}</h1>
+        <p class="headline">Professional Title </p>
+        <p class="location"><i class="fas fa-map-marker-alt">{{ user_profile.location|default:"Add your location" }}</i>
+          Location </p>
+        <a href="{% url 'logout' %}">LogOut</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="profile-content">
+    <div class="profile-section">
+      <h2>About Me</h2>
+      <div class="editable-content" id="about-me">
+      <p>{{user_profile.bio}}</p>
+      </div>
+    </div>
+
+    <div class="profile-section">
+      <h2>Skills</h2>
+      <div class="skills-container">
+        <div class="skill-tags" id="skill-list">
+          <!-- Skills will be added here -->
+          <p>{{user_profile.skill}}</p>
+        </div>
+        <div class="add-skill">
+          <input type="text" id="skill-input" placeholder="Add a skill" />
+          <button onclick="addSkill()">Add</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="profile-section">
+      <h2>Experience</h2>
+      <div class="experience-list" id="experience-list">
+        <!-- Experience items will be added here -->
+        <p>{{ user_profile.experience|default:"Add your experience" }}</p>
+      </div>
+      <button class="add-experience-btn" onclick="showExperienceForm()">
+        <i class="fas fa-plus"></i></i> Add Experience
+      </button>
+    </div>
+
+    <div class="profile-section">
+      <h2>Education</h2>
+      <div class="education-list" id="education-list">
+        <!-- Education items will be added here -->
+        <p>{{ user_profile.education|default:"Add your education" }}</p>
+      </div>
+      <button class="add-education-btn" onclick="showEducationForm()">
+        <i class="fas fa-plus"></i> Add Education
+      </button>
+
+      <i class="fas fa-plus"></i>
+
+    </div>
+  </div>
+</div>
+
+<!-- Experience Form Modal -->
+<div id="experience-modal" class="modal">
+  <div class="modal-content">
+    <span class="close">&times;</span>
+    <h2>Add Experience</h2>
+    <form id="experience-form">
+      <input type="text" placeholder="Company Name" required />
+      <input type="text" placeholder="Position" required />
+      <input type="date" placeholder="Start Date" required />
+      <input type="date" placeholder="End Date" />
+      <textarea placeholder="Description"></textarea>
+      <button type="submit">Save</button>
+    </form>
+  </div>
+</div>
+
+<!-- Education Form Modal -->
+<div id="education-modal" class="modal">
+  <div class="modal-content">
+    <span class="close">&times;</span>
+    <h2>Add Education</h2>
+    <form id="education-form">
+      <input type="text" placeholder="School/University" required />
+      <input type="text" placeholder="Degree" required />
+      <input type="text" placeholder="Field of Study" required />
+      <input type="date" placeholder="Start Date" required />
+      <input type="date" placeholder="End Date" />
+      <button type="submit">Save</button>
+    </form>
+  </div>
+</div>
+
+<style>
+  .profile-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+
+  .profile-header {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+  }
+
+  .profile-cover {
+    height: 200px;
+    background: linear-gradient(45deg, #2196f3, #3f51b5);
+    border-radius: 8px 8px 0 0;
+  }
+
+  .profile-info {
+    padding: 20px;
+    position: relative;
+    margin-top: -60px;
+    display: flex;
+    align-items: flex-end;
+    gap: 30px;
+  }
+
+  .profile-avatar {
+    position: relative;
+    display: inline-block;
+    flex-shrink: 0;
+  }
+
+  .profile-avatar img {
+    width: 180px;
+    height: 180px;
+    border-radius: 50%;
+    border: 5px solid white;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    background-color: #fff;
+    object-fit: cover;
+  }
+
+  .edit-avatar {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    background: white;
+    border-radius: 50%;
+    width: 35px;
+    height: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
+  }
+
+  .edit-avatar:hover {
+    background: #f5f5f5;
+    transform: scale(1.05);
+  }
+
+  .profile-details {
+    margin-left: 0;
+    margin-top: 0;
+    padding-bottom: 10px;
+  }
+
+  .profile-details h1 {
+    margin: 0 0 5px 0;
+    font-size: 2em;
+    color: #333;
+  }
+
+  .profile-details .headline {
+    margin: 0 0 10px 0;
+    font-size: 1.1em;
+    color: #666;
+  }
+
+  .profile-details .location {
+    margin: 0;
+    color: #777;
+    font-size: 0.95em;
+  }
+
+  .profile-details .location i {
+    margin-right: 5px;
+    color: #2196f3;
+  }
+
+  @media (max-width: 768px) {
+    .profile-info {
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 15px;
+    }
+
+    .profile-avatar img {
+      width: 150px;
+      height: 150px;
+    }
+
+    .profile-details {
+      padding-bottom: 0;
+    }
+  }
+
+  .add-experience-btn,
+  .add-education-btn {
+    background: #2196f3;
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+  }
+
+  .add-experience-btn:hover,
+  .add-education-btn:hover {
+    background: #1976d2;
+  }
+
+  .skill-tag {
+    background: #e3f2fd;
+    padding: 8px 15px;
+    border-radius: 20px;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s ease;
+  }
+
+  .skill-tag:hover {
+    background: #bbdefb;
+  }
+
+  .skill-tag span {
+    color: #666;
+    font-weight: bold;
+  }
+
+  .profile-section {
+    background: white;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+
+  .skills-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .skill-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .skill-tag {
+    background: #e3f2fd;
+    padding: 5px 10px;
+    border-radius: 15px;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+
+  .modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+  }
+
+  .modal-content {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    width: 500px;
+    margin: 100px auto;
+  }
+
+  .modal-content form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .modal-content input,
+  .modal-content textarea {
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+  }
+
+  .close {
+    float: right;
+    cursor: pointer;
+    font-size: 24px;
+  }
+</style>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    // Make content editable
+    const editableContent = document.querySelectorAll(".editable-content");
+    editableContent.forEach((element) => {
+      element.addEventListener("click", function () {
+        element.contentEditable = true;
+        element.focus();
+      });
+    });
+
+    // Handle avatar upload
+    const avatarUpload = document.getElementById("avatar-upload");
+    avatarUpload.addEventListener("change", function (e) {
+      const file = e.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function (e) {
+          document.getElementById("profile-pic").src = e.target.result;
+        };
+        reader.readAsDataURL(file);
+      }
+    });
+  });
+
+  function addSkill() {
+    const skillInput = document.getElementById("skill-input");
+    const skillList = document.getElementById("skill-list");
+
+    if (skillInput.value.trim() !== "") {
+      const skillTag = document.createElement("div");
+      skillTag.className = "skill-tag";
+      skillTag.innerHTML = `
+            ${skillInput.value}
+            <span onclick="this.parentElement.remove()" style="cursor: pointer;">×</span>
+        `;
+      skillList.appendChild(skillTag);
+      skillInput.value = "";
+    }
+  }
+
+  function showExperienceForm() {
+    document.getElementById("experience-modal").style.display = "block";
+  }
+
+  function showEducationForm() {
+    document.getElementById("education-modal").style.display = "block";
+  }
+
+  // Close modals
+  document.querySelectorAll(".close").forEach((closeBtn) => {
+    closeBtn.addEventListener("click", function () {
+      this.closest(".modal").style.display = "none";
+    });
+  });
+
+  // Handle form submissions
+  document
+    .getElementById("experience-form")
+    .addEventListener("submit", function (e) {
+      e.preventDefault();
+      const experienceList = document.getElementById("experience-list");
+      const formData = new FormData(e.target);
+
+      const experienceItem = document.createElement("div");
+      experienceItem.className = "experience-item";
+      experienceItem.innerHTML = `
+        <h3>${formData.get("position")} at ${formData.get("company")}</h3>
+        <p>${formData.get("start-date")} - ${formData.get("end-date") || "Present"
+        }</p>
+        <p>${formData.get("description")}</p>
+    `;
+
+      experienceList.appendChild(experienceItem);
+      document.getElementById("experience-modal").style.display = "none";
+      e.target.reset();
+    });
+
+  document
+    .getElementById("education-form")
+    .addEventListener("submit", function (e) {
+      e.preventDefault();
+      const educationList = document.getElementById("education-list");
+      const formData = new FormData(e.target);
+
+      const educationItem = document.createElement("div");
+      educationItem.className = "education-item";
+      educationItem.innerHTML = `
+        <h3>${formData.get("degree")} in ${formData.get("field")}</h3>
+        <p>${formData.get("school")}</p>
+        <p>${formData.get("start-date")} - ${formData.get("end-date") || "Present"
+        }</p>
+    `;
+
+      educationList.appendChild(educationItem);
+      document.getElementById("education-modal").style.display = "none";
+      e.target.reset();
+    });
+</script>
