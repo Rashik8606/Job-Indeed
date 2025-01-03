@@ -2,16 +2,19 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from .forms import CustomCreationForm
-from .models import UserProfile, ChatMessage, JobVacancies
+from .models import UserProfile, ChatMessage,JobVacancies
 from django.contrib.auth.models import User
 from django.db.models import Subquery, OuterRef, Q
 from rest_framework import generics
-from rest_framework.permissions import IsAuthenticated
-from .serializer import MessageSerializer, ProfileSerializer
-from rest_framework.response import Response
-from rest_framework import status
-from django.contrib.auth.decorators import login_required
+from .serializer import MessageSerializer,ProfileSerializer
 from .forms import JobVacanciesForm
+from django.contrib.auth.decorators import login_required
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
+from http import HTTPStatus
+from rest_framework import status
+
+
 
 def user_register(request):
     if request.method == 'POST':
