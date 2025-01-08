@@ -182,3 +182,24 @@ def job_listings(request):
     ).order_by('-last_updated')
     
     return render(request, 'job_listings.html', {'disp': joblist})
+
+
+
+
+# trying live location
+
+import requests
+import json
+def live_location(request):
+    ip = requests.get('https://api.ipify.org?format=json')
+    ip_data = json.loads(ip.text)
+    res = requests.get('http://ip-api.com/json/'+ip_data["ip"])
+    location_data_one = res.text
+    location_data = json.loads(location_data_one)
+    lat = location_data['lat']
+    lon = location_data['lon']
+
+    # Create Google Maps URL
+    google_maps_url = f"https://www.google.com/maps/@{lat},{lon},15z"
+
+    return render(request, 'test.html', {'data': location_data, 'google_maps_url': google_maps_url})

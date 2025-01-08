@@ -26,7 +26,10 @@ def update_profile_pic(request):
         return redirect('profile')
     
 
+import requests
+
 def BackToPage(request):
+        res = requests.get('http://ip-api.com/json/24.48.0.1')
         return redirect('index')
 
 

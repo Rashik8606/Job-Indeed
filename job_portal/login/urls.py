@@ -30,6 +30,13 @@ urlpatterns = [
     # path('chat/<int:other_user_id>/', views.chat_view, name='chat_view'),
     # ... other URL patterns ...
 
+    # test--------->
+
+    
+    path('testing/',views.live_location,name='testing'),
+
+
+    # ----------->
 
 
 

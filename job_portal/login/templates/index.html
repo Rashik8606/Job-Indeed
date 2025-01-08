@@ -15,6 +15,8 @@
 
 <body>
   <!-- Header Section -->
+
+
   <nav class="navbar navbar-expand-lg bg-body-tertiary">
     <div class="container-fluid">
       <a class="navbar-brand" href="#">Job Indeed</a>
@@ -148,19 +150,25 @@
   </div>
 
   <!-- Alert section -->
-
+  {% if disp %}
+  {% for i in disp %}
   <div id="applicationModal" class="modal">
     <div class="modal-content">
       <span class="close" onclick="closeModal()">&times;</span>
+      <h3>{{ i.jobTitle }}</h3>
+      <h5>{{ i.jobResposibility }}</h5>
+      <small>{{i.location}}</small>
       <h2>Confirm</h2>
+      <a href="{{ google_maps_url }}" target="_blank">View Live Location on Google Maps</a>
       <!-- You can add your application form here -->
       <form id="applicationForm">
-        <small>Are you Conform this Job</small>
-        <button type="submit" class="btn btn-outline-primary">Confirm</button>
+        <small>Are you sure you want to apply for this job?</small>
+        <button type="submit" class="btn btn-outline-primary"><a href="{{ google_maps_url }}" target="_blank"></a>Confirm</button>
       </form>
     </div>
   </div>
-
+  {% endfor %}
+  {% endif %}
   <style>
     .modal {
       display: none;
