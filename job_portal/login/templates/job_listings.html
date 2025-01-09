@@ -50,17 +50,26 @@
 
 
 <!-- Modal Structure -->
-<div id="applicationModal" class="modal">
-  <div class="modal-content">
+{% if disp %}
+  {% for i in disp %}
+  <div id="applicationModal" class="modal">
+    <div class="modal-content">
       <span class="close" onclick="closeModal()">&times;</span>
-      <h2>Conform </h2>
+      <h3>{{ i.jobTitle }}</h3>
+      <h5>{{ i.jobResposibility }}</h5>
+      <small>{{i.location}}</small>
+      <h2>Confirm</h2>
+      <li>City : {{data.city}}</li>
       <!-- You can add your application form here -->
       <form id="applicationForm">
-          <small>Are you confirming this job?"</small>
-          <button class="btn btn-outline-primary" type="submit">Submit</button>
+        <small>Are you sure you want to apply for this job?</small>
+        <button type="button" class="btn btn-outline-primary" onclick="window.open('{{ google_maps_url }}', '_blank')">Confirm</button>
+
       </form>
+    </div>
   </div>
-</div>
+  {% endfor %}
+  {% endif %}
 <!-- -----------> 
 
 

@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect,get_object_or_404
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from .forms import CustomCreationForm
@@ -13,7 +13,9 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from http import HTTPStatus
 from rest_framework import status
-
+import requests
+import json
+from django.http import Http404
 
 
 def user_register(request):
@@ -123,6 +125,8 @@ class SearchUser(generics.ListAPIView):
         serializer = self.get_serializer(queryset, many=True)
         return Response(serializer.data)
 
+
+
 class ProfileDetails(generics.RetrieveUpdateAPIView):
     queryset = UserProfile.objects.all()
     serializer_class = ProfileSerializer
@@ -134,6 +138,8 @@ def index(request):
     details = JobVacancies.objects.all()
     return render(request, 'index.html', {'disp': details})
 
+ 
+ 
 @login_required
 def jobVacanciesViews(request):
     if request.method == 'POST':
@@ -184,22 +190,15 @@ def job_listings(request):
     return render(request, 'job_listings.html', {'disp': joblist})
 
 
-
+def apply(request,pk):
+    try:
+        job = JobVacancies.objects.get(pk=pk)
+    except JobVacancies.DoesNotExist:
+        raise Http404("Job does not exist")
+    return render(request,'test.html',{'disp':job})
 
 # trying live location
 
-import requests
-import json
-def live_location(request):
-    ip = requests.get('https://api.ipify.org?format=json')
-    ip_data = json.loads(ip.text)
-    res = requests.get('http://ip-api.com/json/'+ip_data["ip"])
-    location_data_one = res.text
-    location_data = json.loads(location_data_one)
-    lat = location_data['lat']
-    lon = location_data['lon']
 
-    # Create Google Maps URL
-    google_maps_url = f"https://www.google.com/maps/@{lat},{lon},15z"
 
-    return render(request, 'test.html', {'data': location_data, 'google_maps_url': google_maps_url})
+    

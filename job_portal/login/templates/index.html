@@ -135,7 +135,7 @@
             <p class="card-text">
               {{i.jobResposibility}}
             </p>
-            <button class="btn btn-outline-primary" onclick="openApplication()">Apply Now</button>
+            <button class="btn btn-outline-primary" onclick="openApplication()" url="{%url 'apply' i.id%}">Apply Now</button>
           </div>
           <div class="card-footer">
             <small class="text-body-secondary">{{i.last_updated}}</small>
@@ -149,6 +149,7 @@
     {% endif %}
   </div>
 
+
   <!-- Alert section -->
   {% if disp %}
   {% for i in disp %}
@@ -159,17 +160,24 @@
       <h5>{{ i.jobResposibility }}</h5>
       <small>{{i.location}}</small>
       <h2>Confirm</h2>
-      <a href="{{ google_maps_url }}" target="_blank">View Live Location on Google Maps</a>
       <!-- You can add your application form here -->
       <form id="applicationForm">
+        {% csrf_token %}
         <small>Are you sure you want to apply for this job?</small>
-        <button type="submit" class="btn btn-outline-primary"><a href="{{ google_maps_url }}" target="_blank"></a>Confirm</button>
+        {% if i.location %}
+
+  <a class="btn btn-outline-primary" href="https://www.google.com/maps/search/?q={{ i.location|urlencode }}">Confirm</a>
+{% else %}
+  <p>Location not available.</p>
+{% endif %}
       </form>
     </div>
   </div>
   {% endfor %}
   {% endif %}
+  
   <style>
+
     .modal {
       display: none;
       /* Hidden by default */

@@ -9,6 +9,7 @@ urlpatterns = [
     path('accounts/register/', views.user_register, name='register'),
     path('accounts/login/', views.login_view, name='login'),
     path('logout/', views.logoutview, name='logout'),
+    path('testing/<int:pk>/',views.apply,name='apply'),
 
     #message URL
     path('api/inbox/<int:user_id>/', views.MyInbox.as_view(), name='inbox'),
@@ -33,7 +34,6 @@ urlpatterns = [
     # test--------->
 
     
-    path('testing/',views.live_location,name='testing'),
 
 
     # ----------->

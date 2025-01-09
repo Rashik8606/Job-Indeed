@@ -62,7 +62,8 @@ class JobVacancies(models.Model):
     jobRequirement = models.TextField()
     last_updated = models.DateTimeField(auto_now=True)
     companyLogo = models.ImageField(upload_to='company_logo',blank=True,null=True,default='company_logo/default_logo.png')
-
+    latitude = models.FloatField(null=True, blank=True)
+    longitude = models.FloatField(null=True, blank=True)
 
 
     def __str__(self) -> str:

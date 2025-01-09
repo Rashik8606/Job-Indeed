@@ -31,7 +31,7 @@ class LoginForm(forms.Form):
 class JobVacanciesForm(forms.ModelForm):
     class Meta:
         model = JobVacancies
-        fields = '__all__'
+        fields = ['jobTitle', 'branchEmail', 'jobQualification', 'location', 'contactNumber', 'applicationEmailUrl', 'jobSkill', 'jobType', 'jobSalary', 'shortDiscription', 'jobResposibility','workingEnvironment','jobRequirement', 'jobCategory','companyLogo']
 
 
 class JobSearchForm(forms.Form):
