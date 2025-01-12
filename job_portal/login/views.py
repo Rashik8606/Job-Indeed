@@ -133,13 +133,16 @@ class ProfileDetails(generics.RetrieveUpdateAPIView):
     permission_classes = [IsAuthenticated]
     lookup_field = 'user_id'
 
+
+
 @login_required
 def index(request):
     details = JobVacancies.objects.all()
     return render(request, 'index.html', {'disp': details})
 
- 
- 
+
+
+    
 @login_required
 def jobVacanciesViews(request):
     if request.method == 'POST':
@@ -190,12 +193,9 @@ def job_listings(request):
     return render(request, 'job_listings.html', {'disp': joblist})
 
 
-def apply(request,pk):
-    try:
-        job = JobVacancies.objects.get(pk=pk)
-    except JobVacancies.DoesNotExist:
-        raise Http404("Job does not exist")
-    return render(request,'test.html',{'disp':job})
+# def apply(request, pk):
+#     job = get_object_or_404(JobVacancies, pk=pk)
+#     return render(request, 'test.html', {'disp': job})
 
 # trying live location
 

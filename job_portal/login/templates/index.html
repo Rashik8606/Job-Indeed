@@ -29,17 +29,21 @@
           <li class="nav-item"><a class="nav-link active" href="#">Home</a></li>
           <li class="nav-item"><a class="nav-link" href="#">Link</a></li>
           <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">Link</a>
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">Job Option</a>
             <ul class="dropdown-menu">
-              <li><a class="dropdown-item" href="#">Action</a></li>
-              <li><a class="dropdown-item" href="#">Another action</a></li>
+              <li><a class="dropdown-item" href="#">Part time</a></li>
+              <li><a class="dropdown-item" href="#">Full Time</a></li>
               <li>
                 <hr class="dropdown-divider" />
               </li>
-              <li><a class="dropdown-item" href="#">Something else here</a></li>
+              <li><a class="dropdown-item" href="#">Short Time</a></li>
             </ul>
           </li>
-          <li class="nav-item"><a class="nav-link disabled">Link</a></li>
+
+          <!-- Future Purpose -->
+          <li class="nav-item"><a class="nav-link disabled"></a></li>
+          <!-- =================== -->
+
         </ul>
         <div class="speech-bubble-container">
           <form action="{% url 'messagepage' %}" method="post">
@@ -135,7 +139,12 @@
             <p class="card-text">
               {{i.jobResposibility}}
             </p>
-            <button class="btn btn-outline-primary" onclick="openApplication()" url="{%url 'apply' i.id%}">Apply Now</button>
+            <button class="btn btn-outline-primary" onclick="openApplication(
+              '{{ i.jobTitle }}', 
+              '{{ i.jobResposibility }}', 
+              '{{ i.location }}',
+              '{{ i.jobCategory }}'
+            )">Apply Now</button>
           </div>
           <div class="card-footer">
             <small class="text-body-secondary">{{i.last_updated}}</small>
@@ -151,33 +160,21 @@
 
 
   <!-- Alert section -->
-  {% if disp %}
-  {% for i in disp %}
+
   <div id="applicationModal" class="modal">
     <div class="modal-content">
       <span class="close" onclick="closeModal()">&times;</span>
-      <h3>{{ i.jobTitle }}</h3>
-      <h5>{{ i.jobResposibility }}</h5>
-      <small>{{i.location}}</small>
-      <h2>Confirm</h2>
-      <!-- You can add your application form here -->
-      <form id="applicationForm">
-        {% csrf_token %}
-        <small>Are you sure you want to apply for this job?</small>
-        {% if i.location %}
-
-  <a class="btn btn-outline-primary" href="https://www.google.com/maps/search/?q={{ i.location|urlencode }}">Confirm</a>
-{% else %}
-  <p>Location not available.</p>
-{% endif %}
-      </form>
+      <h3 style="color: #0d4fa5;" id="modalJobTitle"></h3>
+      <h3 style="color: #0d4fa5;" id="modalJobCategory"></h3>
+      <h5 id="modalJobResponsibilities"></h5>
+      <small id="modalJobLocation"></small>
+      <p>Are you sure you want to apply for this job?</p>
+      <a id="googleMapsLink" class="btn btn-outline-primary" href="#" target="_blank">Confirm</a>
     </div>
   </div>
-  {% endfor %}
-  {% endif %}
-  
-  <style>
 
+
+  <style>
     .modal {
       display: none;
       /* Hidden by default */
@@ -223,22 +220,36 @@
       cursor: pointer;
     }
   </style>
-
   <script>
+    // Function to open the modal and populate it with job details
+    function openApplication(jobTitle, jobResponsibilities, location ,jobCategory) {
+      // Update the modal content with the selected job details
+      document.getElementById('modalJobTitle').innerText = jobTitle;
+      document.getElementById('modalJobCategory').innerText = jobCategory;
+      document.getElementById('modalJobResponsibilities').innerText = jobResponsibilities;
+      document.getElementById('modalJobLocation').innerText = location || "Location not available";
 
-    function openApplication() {
-      const modal = document.getElementById("applicationModal");
-      modal.style.display = "block"; // Show the modal
+      // If location is available, set Google Maps link
+      const mapsLink = document.getElementById('googleMapsLink');
+      if (location) {
+        mapsLink.href = `https://www.google.com/maps/search/?q=${encodeURIComponent(location)}`;
+        mapsLink.style.display = 'inline-block';
+      } else {
+        mapsLink.style.display = 'none';
+      }
+
+      // Show the modal
+      document.getElementById('applicationModal').style.display = 'block';
     }
 
+    // Function to close the modal
     function closeModal() {
-      const modal = document.getElementById("applicationModal");
-      modal.style.display = "none"; // Hide the modal
+      document.getElementById('applicationModal').style.display = 'none';
     }
 
     // Close the modal if the user clicks anywhere outside of it
     window.onclick = function (event) {
-      const modal = document.getElementById("applicationModal");
+      const modal = document.getElementById('applicationModal');
       if (event.target == modal) {
         closeModal();
       }

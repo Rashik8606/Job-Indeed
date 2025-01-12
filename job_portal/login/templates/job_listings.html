@@ -1,135 +1,142 @@
 <h1>Available Job Listings</h1>
-<link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-      integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx"
-      crossorigin="anonymous"
-    />
-    
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet"
+  integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous" />
+
 <!-- Search Form -->
 <form method="get" action="{% url 'job_listings' %}">
-    <div class="input-group mb-4">
-        <input
-            type="text"
-            class="form-control"
-            name="query"
-            value="{{ request.GET.query }}"
-            placeholder="Search job title, company, or responsibility"
-        />
-        <button class="search-btn" lass="btn btn-outline-primary">Search</button>
-    </div>
+  <div class="input-group mb-4">
+    <input type="text" class="form-control" name="query" value="{{ request.GET.query }}"
+      placeholder="Search job title, company, or responsibility" />
+    <button class="search-btn" lass="btn btn-outline-primary">Search</button>
+  </div>
 </form>
 
 <!-- Display Job Listings -->
 {% if disp %}
-      <div class="row d-flex flex-wrap justify-content-between">
-        {% for i in disp %}
-        <div class="col-12 col-sm-6 col-md-4 mb-4">
-          <div class="card h-100">
-            <img
-              src="{% if i.companyLogo %}{{ i.companyLogo.url }}{% else %}/media/company_logo/default_logo.png{% endif %}"
-              class="card-img-top"
-              alt="Company Logo"
-            />
-            <div class="card-body">
-              <h5 class="card-title">{{ i.jobTitle }}</h5>
-              <small>{{i.host}}</small>
-              <p class="card-text">{{i.jobResposibility}}</p>
-              <button class="btn btn-outline-primary" onclick="openApplication()">Apply Now</button>
-            </div>
-            <div class="card-footer">
-              <small class="text-body-secondary">{{i.last_updated}}</small>
-            </div>
+    <div class="row d-flex flex-wrap justify-content-between">
+      {% for i in disp %}
+      <div class="col-12 col-sm-6 col-md-4 mb-4">
+        <div class="card h-100">
+          <img
+            src="{% if i.companyLogo %}{{ i.companyLogo.url }}{% else %}/media/company_logo/default_logo.png{% endif %}"
+            class="card-img-top" alt="Company Logo" />
+          <div class="card-body">
+            <h5 class="card-title">{{ i.jobTitle }}</h5>
+            <small>{{i.host}}</small>
+            <p class="card-text">
+              {{i.jobResposibility}}
+            </p>
+            <button class="btn btn-outline-primary" onclick="openApplication(
+              '{{ i.jobTitle }}', 
+              '{{ i.jobResposibility }}', 
+              '{{ i.location }}'
+            )">Apply Now</button>
+          </div>
+          <div class="card-footer">
+            <small class="text-body-secondary">{{i.last_updated}}</small>
           </div>
         </div>
-        {% endfor %}
       </div>
-      {% else %}
-      <p>No job listings available.</p>
-      {% endif %}
+      {% endfor %}
+    </div>
+    {% else %}
+    <p>No job listings available.</p>
+    {% endif %}
+  </div>
 
 
-<!-- Modal Structure -->
-{% if disp %}
-  {% for i in disp %}
+  <!-- Alert section -->
+  <!-- Modal -->
   <div id="applicationModal" class="modal">
     <div class="modal-content">
       <span class="close" onclick="closeModal()">&times;</span>
-      <h3>{{ i.jobTitle }}</h3>
-      <h5>{{ i.jobResposibility }}</h5>
-      <small>{{i.location}}</small>
+      <h3 id="modalJobTitle"></h3>
+      <h5 id="modalJobResponsibilities"></h5>
+      <small id="modalJobLocation"></small>
       <h2>Confirm</h2>
-      <li>City : {{data.city}}</li>
-      <!-- You can add your application form here -->
-      <form id="applicationForm">
-        <small>Are you sure you want to apply for this job?</small>
-        <button type="button" class="btn btn-outline-primary" onclick="window.open('{{ google_maps_url }}', '_blank')">Confirm</button>
-
-      </form>
+      <p>Are you sure you want to apply for this job?</p>
+      <a id="googleMapsLink" class="btn btn-outline-primary" href="#" target="_blank">Confirm</a>
     </div>
   </div>
-  {% endfor %}
-  {% endif %}
-<!-- -----------> 
 
 
-<style>
-  .modal {
-    display: none; /* Hidden by default */
-    position: fixed; /* Stay in place */
-    z-index: 1; /* Sit on top */
-    left: 0;
-    top: 0;
-    width: 100%; /* Full width */
-    height: 100%; /* Full height */
-    overflow: auto; /* Enable scroll if needed */
-    background-color: rgb(0, 0, 0); /* Fallback color */
-    background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
-  }
-
-  .modal-content {
-    background-color: #fefefe;
-    margin: 15% auto; /* 15% from the top and centered */
-    padding: 20px;
-    border: 1px solid #888;
-    width: 80%; /* Could be more or less, depending on screen size */
-  }
-
-  .close {
-    color: #aaa;
-    float: right;
-    font-size: 28px;
-    font-weight: bold;
-  }
-
-  .close:hover,
-  .close:focus {
-    color: black;
-    text-decoration: none;
-    cursor: pointer;
-  }
-  #alert-conform {
-    margin-left: 20px;
-    margin-top: 4px;
-  }
-</style>
-
-<script>
-  function openApplication() {
-    const modal = document.getElementById("applicationModal");
-    modal.style.display = "block"; // Show the modal
-  }
-
-  function closeModal() {
-    const modal = document.getElementById("applicationModal");
-    modal.style.display = "none"; // Hide the modal
-  }
-
-  // Close the modal if the user clicks anywhere outside of it
-  window.onclick = function (event) {
-    const modal = document.getElementById("applicationModal");
-    if (event.target == modal) {
-      closeModal();
+  <style>
+    .modal {
+      display: none;
+      /* Hidden by default */
+      position: fixed;
+      /* Stay in place */
+      z-index: 1;
+      /* Sit on top */
+      left: 0;
+      top: 0;
+      width: 100%;
+      /* Full width */
+      height: 100%;
+      /* Full height */
+      overflow: auto;
+      /* Enable scroll if needed */
+      background-color: rgb(0, 0, 0);
+      /* Fallback color */
+      background-color: rgba(0, 0, 0, 0.4);
+      /* Black w/ opacity */
     }
-  };
-</script>
+
+    .modal-content {
+      background-color: #fefefe;
+      margin: 15% auto;
+      /* 15% from the top and centered */
+      padding: 20px;
+      border: 1px solid #888;
+      width: 80%;
+      /* Could be more or less, depending on screen size */
+    }
+
+    .close {
+      color: #aaa;
+      float: right;
+      font-size: 28px;
+      font-weight: bold;
+    }
+
+    .close:hover,
+    .close:focus {
+      color: black;
+      text-decoration: none;
+      cursor: pointer;
+    }
+  </style>
+  <script>
+    // Function to open the modal and populate it with job details
+    function openApplication(jobTitle, jobResponsibilities, location) {
+      // Update the modal content with the selected job details
+      document.getElementById('modalJobTitle').innerText = jobTitle;
+      document.getElementById('modalJobResponsibilities').innerText = jobResponsibilities;
+      document.getElementById('modalJobLocation').innerText = location || "Location not available";
+
+      // If location is available, set Google Maps link
+      const mapsLink = document.getElementById('googleMapsLink');
+      if (location) {
+        mapsLink.href = `https://www.google.com/maps/search/?q=${encodeURIComponent(location)}`;
+        mapsLink.style.display = 'inline-block';
+      } else {
+        mapsLink.style.display = 'none';
+      }
+
+      // Show the modal
+      document.getElementById('applicationModal').style.display = 'block';
+    }
+
+    // Function to close the modal
+    function closeModal() {
+      document.getElementById('applicationModal').style.display = 'none';
+    }
+
+    // Close the modal if the user clicks anywhere outside of it
+    window.onclick = function (event) {
+      const modal = document.getElementById('applicationModal');
+      if (event.target == modal) {
+        closeModal();
+      }
+    }
+  </script>

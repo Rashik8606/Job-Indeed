@@ -1,23 +1,7 @@
-<h3>{{data}}</h3>
-
-<h4><ul>
-    <li>Country : {{data1.country}}</li>
-    <li>City : {{data1.city}}</li>
-    <!-- <li>Latitude : {{data.lat}}</li>
-    <li>Logitude : {{data.log}}</li> -->
-    <li>Country Code : {{data1.countryCode}}</li>
-    <li>time zone  : {{data1.timezone}}</li>
-    <!-- <li>Zip  : {{data.zip}}</li> -->
-    <a href="{{ google_maps_url }}" target="_blank">View Live Location on Google Maps</a>
-
-
-</ul></h4>
-<html>
-    <body>
-        {% if disp %}
-        {% for i in disp %}
-        {{i.jobTitle}}
-        {% endfor %}
-        {% endif %}
-    </body>
-</html>
+<body>
+    <h1>Job Details</h1>
+    <h2>{{ disp.jobTitle }}</h2>
+    <p><strong>Location:</strong> {{ disp.location }}</p>
+    <p><strong>Description:</strong> {{ disp.jobQualification }}</p>
+    <p><strong>Salary:</strong> {{ disp.salary }}</p>
+</body>

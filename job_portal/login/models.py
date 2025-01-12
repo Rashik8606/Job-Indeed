@@ -39,6 +39,11 @@ class JobVacancies(models.Model):
         ONSITE = 'Onsite', 'Onsite'
         HYBRID = 'Hybrid', 'Hybrid'
 
+    class JobCategory(models.TextChoices):
+        FullTime = 'Full Time', 'Full Time'
+        PartTime = 'Part Time', 'Part Time'
+        Shorttime = 'Short Time', 'Short Time'
+
     jobTitle = models.CharField(max_length=255)
     branchEmail = models.EmailField()
     jobQualification = models.CharField(max_length=255)
@@ -57,7 +62,11 @@ class JobVacancies(models.Model):
         default=woworkingEnvironment.REMOTE
     )
     shortDiscription = models.TextField()
-    jobCategory = models.CharField(max_length=255)
+    jobCategory = models.TextField(
+        max_length=255,
+        choices = JobCategory.choices,
+        default=JobCategory.FullTime
+    )
     jobResposibility = models.CharField(max_length=255)
     jobRequirement = models.TextField()
     last_updated = models.DateTimeField(auto_now=True)

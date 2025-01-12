@@ -9,7 +9,7 @@ urlpatterns = [
     path('accounts/register/', views.user_register, name='register'),
     path('accounts/login/', views.login_view, name='login'),
     path('logout/', views.logoutview, name='logout'),
-    path('testing/<int:pk>/',views.apply,name='apply'),
+    # path('apply/<int:pk>/',views.apply,name='apply'),
 
     #message URL
     path('api/inbox/<int:user_id>/', views.MyInbox.as_view(), name='inbox'),
@@ -21,8 +21,6 @@ urlpatterns = [
     path('messagespage/', views.messagePage, name='messages'),
     path('api/messages/send/', views.SendMessage.as_view(), name='send_message'),
 
-
-    # path('profile/', views.profile_view, name='profile_view'),  # Ensure this line is present
 
 
     # path('chat/<int:other_user_id>/', views.chat_view, name='chat_view'),
