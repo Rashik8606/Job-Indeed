@@ -193,8 +193,15 @@ def job_listings(request):
     return render(request, 'job_listings.html', {'disp': joblist})
 
 
+
+from django.db.models.signals import post_save
+from django.core.mail import send_mail
+from django.dispatch import receiver
+
+
+@receiver(post_save, sender=JobVacancies)
 def send_job_alert(sender,instance,created,**kwargs):
-    if created:  # Only send email when a new job is created
+    if created:  
         subject = f"New Job Posting: {instance.jobTitle}"
         message = (
             f"A new job has been posted:\n\n"
@@ -206,18 +213,32 @@ def send_job_alert(sender,instance,created,**kwargs):
             f"Apply Here: {instance.applicationEmailUrl}\n"
         )
         
-        # Get the email addresses of all active users
+       
         recipient_list = [user.email for user in User.objects.filter(is_active=True)]
 
-        # Send email
+       
         send_mail(
             subject,
             message,
-            'your-email@example.com',  # From email
-            recipient_list,  # To emails
+            'rrashik409@gmail.com',  
+            recipient_list,  
             fail_silently=False,
         )
 
 
 
-    
+
+import logging
+
+logger = logging.getLogger(__name__)
+
+try:
+    send_mail(
+        'Test Subject',
+        'Test Email Body',
+        'your-email@gmail.com',
+        ['recipient@example.com'],
+        fail_silently=False,
+    )
+except Exception as e:
+    logger.error(f"Error sending email: {e}")
