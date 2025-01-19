@@ -193,11 +193,30 @@ def job_listings(request):
     return render(request, 'job_listings.html', {'disp': joblist})
 
 
-# def apply(request, pk):
-#     job = get_object_or_404(JobVacancies, pk=pk)
-#     return render(request, 'test.html', {'disp': job})
+def send_job_alert(sender,instance,created,**kwargs):
+    if created:  # Only send email when a new job is created
+        subject = f"New Job Posting: {instance.jobTitle}"
+        message = (
+            f"A new job has been posted:\n\n"
+            f"Job Title: {instance.jobTitle}\n"
+            f"Location: {instance.location}\n"
+            f"Category: {instance.jobCategory}\n"
+            f"Salary: {instance.get_jobSalary_display()}\n"
+            f"Description: {instance.shortDiscription}\n\n"
+            f"Apply Here: {instance.applicationEmailUrl}\n"
+        )
+        
+        # Get the email addresses of all active users
+        recipient_list = [user.email for user in User.objects.filter(is_active=True)]
 
-# trying live location
+        # Send email
+        send_mail(
+            subject,
+            message,
+            'your-email@example.com',  # From email
+            recipient_list,  # To emails
+            fail_silently=False,
+        )
 
 
 

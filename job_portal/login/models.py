@@ -10,6 +10,7 @@ class UserProfile(models.Model):
     phone_num = models.CharField(max_length=10, blank=True, null=True) 
     profile_picture = models.ImageField(upload_to='profile_pics', blank=True, null=True)
     skill = models.CharField(max_length=200, blank=True, null=True)
+    experience = models.TextField(blank=True,null=True)
 
     def __str__(self):
         return f'{self.user.username} Profile'
