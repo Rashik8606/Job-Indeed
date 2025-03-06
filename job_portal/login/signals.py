@@ -2,7 +2,7 @@ from django.apps import AppConfig
 
 class YourAppConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
-    name = 'login'  # Replace with your app name
+    name = 'login'  
 
     def ready(self):
-        import login.signals  # Replace with your app name
+        import login.signals  
