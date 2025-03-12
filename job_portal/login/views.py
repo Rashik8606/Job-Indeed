@@ -138,7 +138,11 @@ class ProfileDetails(generics.RetrieveUpdateAPIView):
 @login_required
 def index(request):
     details = JobVacancies.objects.all()
-    return render(request, 'index.html', {'disp': details})
+    latest_jobs = JobVacancies.objects.all().order_by('-id')[:3]
+    return render(request, 'index.html', {
+        'disp': details,
+        'latestjob':latest_jobs
+        })
 
 
 
@@ -247,5 +251,10 @@ except Exception as e:
     logger.error(f"Error sending email: {e}")
 
 
-def test(request):
-    return render(request,'test.html')
+
+# carousel section
+from django.http import JsonResponse
+
+def carousel(request):
+    latestJob = JobVacancies.objects.all().order_by('-id')[:3]
+    return render(request,'test.html',{'latestjob':latestJob})
