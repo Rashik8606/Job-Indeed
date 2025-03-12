@@ -37,6 +37,66 @@ nav {
   .carousel {
     margin-top: 10px;
   }
+
+  
+ /* .carousel section  */
+ .custom-img {
+    height: 500px; /* Adjust as needed */
+    object-fit: cover; /* Ensures the image fills the space properly */
+  }
+  
+  /* Custom Carousel Caption Styling */
+  .custom-caption {
+    position: absolute;
+    top: 50%;
+    left: 10%;
+    transform: translateY(-50%);
+    text-align: left;
+    background: rgba(0, 0, 0, 0.7); /* Darker background for better visibility */
+    padding: 15px 20px;
+    border-radius: 10px;
+    color: white;
+    max-width: 350px;
+    width: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  
+  /* Job Title Styling */
+  .job-title {
+    font-size: 24px;
+    font-weight: bold;
+    color: #f8d210;
+    font-family: 'Poppins', sans-serif;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8);
+  }
+  
+  /* Company Name Styling */
+  .company-name {
+    font-size: 18px;
+    color: #ffffff;
+    font-style: italic;
+    font-family: 'Roboto', sans-serif;
+  }
+  
+@keyframes fadeInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.fadeInLeft {
+  animation: fadeInLeft 1s ease-in-out;
+}
+
+
+/* --------- */
   
   @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700;800;900&display=swap");
   

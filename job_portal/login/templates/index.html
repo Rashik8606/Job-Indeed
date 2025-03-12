@@ -16,10 +16,9 @@
 <body>
   <!-- Header Section -->
 
-
   <nav class="navbar navbar-expand-lg bg-body-tertiary">
     <div class="container-fluid">
-      <a class="navbar-brand" href="{% url 'index' %}">Aspira</a>
+      <a class="navbar-brand custom-brand" href="{% url 'index' %}">Aspira</a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarScroll"
         aria-controls="navbarScroll" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -29,16 +28,21 @@
           <li class="nav-item"><a class="nav-link active" href="{% url 'index' %}">Home</a></li>
           <li class="nav-item"><a class="nav-link" href="#">Link</a></li>
           <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="{% url 'job_listings' %}" role="button" data-bs-toggle="dropdown">Job Option</a>
-            <ul class="dropdown-menu">
-              <li><a class="dropdown-item" href="{% url 'filtered_jobs' 'part time' %}">Part time</a></li>
-              <li><a class="dropdown-item" href="{% url 'filtered_jobs' 'full time' %}">Full Time</a></li>
-              <li>
-              <li><a class="dropdown-item" href="{% url 'filtered_jobs' 'short time' %}">Short Time</a></li>
-              </li>
+            <div class="dropdown">
+              <a class="nav-link dropdown-toggle" href="#" role="button" id="jobDropdown" data-bs-toggle="dropdown">
+                Job Option
+              </a>
+              <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="{% url 'filtered_jobs' 'part time' %}" onclick="updateDropdown('Part Time')">Part Time</a></li>
+                <li><a class="dropdown-item" href="{% url 'filtered_jobs' 'full time' %}" onclick="updateDropdown('Full Time')">Full Time</a></li>
+                <li><a class="dropdown-item" href="{% url 'filtered_jobs' 'short time' %}" onclick="updateDropdown('Short Time')">Short Time</a></li>
+              </ul>
+            </div>
               
             </ul>
           </li>
+
+          
 
           <!-- Future Purpose -->
           <li class="nav-item"><a class="nav-link disabled"></a></li>
@@ -66,15 +70,7 @@
       </div>
     </div>  
   </nav>
-
-  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"
-    integrity="sha384-oBqDVmMz4fnFO9gyb4l+6RZbV0sltb4x4lCh6JStk9KtPGkFhUkk6B2Y/bWe1k0O"
-    crossorigin="anonymous"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.min.js"
-    integrity="sha384-BijOfjjBZoPtCfLgyd3DS6A5fxRZ8Xz5B6pF3k5FZlzdoIDry09W9Q4zYGwGVjOh"
-    crossorigin="anonymous"></script>
-  <script src="{% static 'js/javascript.js' %}"></script>
-
+  
   <header>
     <!-- carousel Section -->
     <div class="carousel">
@@ -101,97 +97,6 @@
         </button>
       </div>
     </div>
-    
-     
-<!-- carousel styling -->
-<style>
-  .custom-img {
-    height: 500px; /* Adjust as needed */
-    object-fit: cover; /* Ensures the image fills the space properly */
-  }
-  
-  /* Custom Carousel Caption Styling */
-  .custom-caption {
-    position: absolute;
-    top: 50%;
-    left: 10%;
-    transform: translateY(-50%);
-    text-align: left;
-    background: rgba(0, 0, 0, 0.7); /* Darker background for better visibility */
-    padding: 15px 20px;
-    border-radius: 10px;
-    color: white;
-    max-width: 350px;
-    width: auto;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-  }
-  
-  /* Job Title Styling */
-  .job-title {
-    font-size: 24px;
-    font-weight: bold;
-    color: #f8d210;
-    font-family: 'Poppins', sans-serif;
-    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8);
-  }
-  
-  /* Company Name Styling */
-  .company-name {
-    font-size: 18px;
-    color: #ffffff;
-    font-style: italic;
-    font-family: 'Roboto', sans-serif;
-  }
-  
-@keyframes fadeInLeft {
-  from {
-    opacity: 0;
-    transform: translateX(-50px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
-
-.fadeInLeft {
-  animation: fadeInLeft 1s ease-in-out;
-}
-
-
-
-</style>
-
-
-
-<!-- --------- -->
-
-<!-- carousel javascript -->
-
-<script>
-  document.addEventListener("DOMContentLoaded", function () {
-    let carousel = document.getElementById("carouselExampleAutoplaying");
-    
-    carousel.addEventListener("slid.bs.carousel", function () {
-      let activeItem = document.querySelector(".carousel-item.active .custom-caption");
-      if (activeItem) {
-        activeItem.classList.add("fadeInLeft");
-        setTimeout(() => {
-          activeItem.classList.remove("fadeInLeft");
-        }, 1000); // Remove animation after 1 sec
-      }
-    });
-  });
-  
-</script>
-
-
-
-<!-- ------------ -->
-
-
 
   </header>
   <form action="{% url 'job_listings' %}" method="get">
@@ -308,8 +213,129 @@
       text-decoration: none;
       cursor: pointer;
     }
-  </style>
+ 
+  .custom-img {
+    height: 500px; /* Adjust as needed */
+    object-fit: cover; /* Ensures the image fills the space properly */
+  }
+  
+  /* Custom Carousel Caption Styling */
+  .custom-caption {
+    position: absolute;
+    top: 50%;
+    left: 10%;
+    transform: translateY(-50%);
+    text-align: left;
+    background: rgba(0, 0, 0, 0.7); /* Darker background for better visibility */
+    padding: 15px 20px;
+    border-radius: 10px;
+    color: white;
+    max-width: 350px;
+    width: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  
+  /* Job Title Styling */
+  .job-title {
+    font-size: 24px;
+    font-weight: bold;
+    color: #f8d210;
+    font-family: 'Poppins', sans-serif;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8);
+  }
+  
+  /* Company Name Styling */
+  .company-name {
+    font-size: 18px;
+    color: #ffffff;
+    font-style: italic;
+    font-family: 'Roboto', sans-serif;
+  }
+  
+@keyframes fadeInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.fadeInLeft {
+  animation: fadeInLeft 1s ease-in-out;
+}
+
+
+.custom-brand {
+  font-size: 36px; /* Larger font size */
+  font-weight: 900; /* Extra bold */
+  font-family: 'Poppins', sans-serif; /* Modern font */
+  text-transform: uppercase; /* Capital letters */
+  letter-spacing: 3px; /* Spacing between letters */
+  background: linear-gradient(45deg, #000000, #000000); /* Gradient color */
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent; /* Apply gradient to text */
+  text-shadow: 4px 4px 6px rgba(0, 0, 0, 0.2); /* Soft shadow effect */
+  position: relative;
+  transition: all 0.4s ease-in-out;
+}
+
+/* Adding a Glow Effect */
+.custom-brand:hover {
+  transform: scale(1.1); /* Slight zoom effect */
+}
+
+/* 3D Depth Effect */
+.custom-brand::before {
+  content: "Aspira";
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  color: rgb(0, 0, 0);
+  z-index: -1;
+}
+
+/* Neon Underline Animation */
+.custom-brand::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: -5px;
+  width: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #030303, #000000);
+  transition: all 0.4s ease-in-out;
+  transform: translateX(-50%);
+  border-radius: 4px;
+}
+
+.custom-brand:hover::after {
+  width: 100%;
+}
+
+
+</style>
+
   <script>
+
+  document.addEventListener("DOMContentLoaded", function () {
+    let carousel = document.getElementById("carouselExampleAutoplaying");
+    
+    carousel.addEventListener("slid.bs.carousel", function () {
+      let activeItem = document.querySelector(".carousel-item.active .custom-caption");
+      if (activeItem) {
+        activeItem.classList.add("fadeInLeft");
+        setTimeout(() => {
+          activeItem.classList.remove("fadeInLeft");
+        }, 1000); // Remove animation after 1 sec
+      }
+    });
+  });
+  
     // Function to open the modal and populate it with job details
     function openApplication(jobTitle, jobResponsibilities, location ,jobCategory) {
       // Update the modal content with the selected job details

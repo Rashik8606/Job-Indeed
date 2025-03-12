@@ -13,7 +13,7 @@
 <body>
   <nav class="navbar navbar-expand-lg bg-body-tertiary">
     <div class="container-fluid">
-      <a class="navbar-brand" href="{% url 'index' %}">Aspira</a>
+      <a class="navbar-brand custom-brand" href="{% url 'index' %}">Aspira</a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarScroll"
         aria-controls="navbarScroll" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -270,6 +270,52 @@
     }
 
 
+    .custom-brand {
+      font-size: 36px; /* Larger font size */
+      font-weight: 900; /* Extra bold */
+      font-family: 'Poppins', sans-serif; /* Modern font */
+      text-transform: uppercase; /* Capital letters */
+      letter-spacing: 3px; /* Spacing between letters */
+      background: linear-gradient(45deg, #000000, #000000); /* Gradient color */
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent; /* Apply gradient to text */
+      text-shadow: 4px 4px 6px rgba(0, 0, 0, 0.2); /* Soft shadow effect */
+      position: relative;
+      transition: all 0.4s ease-in-out;
+    }
+    
+    /* Adding a Glow Effect */
+    .custom-brand:hover {
+      transform: scale(1.1); /* Slight zoom effect */
+    }
+    
+    /* 3D Depth Effect */
+    .custom-brand::before {
+      content: "Aspira";
+      position: absolute;
+      top: 3px;
+      left: 3px;
+      color: rgb(0, 0, 0);
+      z-index: -1;
+    }
+    
+    /* Neon Underline Animation */
+    .custom-brand::after {
+      content: "";
+      position: absolute;
+      left: 50%;
+      bottom: -5px;
+      width: 0;
+      height: 4px;
+      background: linear-gradient(90deg, #030303, #000000);
+      transition: all 0.4s ease-in-out;
+      transform: translateX(-50%);
+      border-radius: 4px;
+    }
+    
+    .custom-brand:hover::after {
+      width: 100%;
+    }
     
   </style>
   <script>
