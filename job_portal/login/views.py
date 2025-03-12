@@ -168,7 +168,7 @@ class MessageRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = [IsAuthenticated]
 
 
-def job_listings(request):
+def job_listings(request,job_type=None):
     query = request.GET.get('query', '')
     post_job = request.GET.get('post_job', '')
     
@@ -189,6 +189,9 @@ def job_listings(request):
         Q(jobResposibility__icontains=query) |
         Q(jobRequirement__icontains=query)
     ).order_by('-last_updated')
+
+    if job_type:
+        joblist = joblist.filter(jobCategory__icontains=job_type)
     
     return render(request, 'job_listings.html', {'disp': joblist})
 
@@ -242,3 +245,7 @@ try:
     )
 except Exception as e:
     logger.error(f"Error sending email: {e}")
+
+
+def test(request):
+    return render(request,'test.html')

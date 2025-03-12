@@ -31,9 +31,8 @@ urlpatterns = [
 
     # test--------->
 
-    
-
-
+    path('jobs/<str:job_type>/', views.job_listings, name='filtered_jobs'),
+    path('test/',views.test,name='test'),
     # ----------->
 
 
