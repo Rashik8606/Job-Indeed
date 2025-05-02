@@ -11,6 +11,71 @@
       crossorigin="anonymous"
     />
   </head>
+  <style>
+    body {
+      background: linear-gradient(to right, #e0eafc, #cfdef3);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    .job-form-card {
+      background-color: #ffffff;
+      border-radius: 20px;
+      padding: 40px;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+      width: 100%;
+      max-width: 700px;
+    }
+
+    .job-form-card h2 {
+      font-weight: bold;
+      margin-bottom: 30px;
+      text-align: center;
+      color: #333;
+    }
+
+    .form-floating > label {
+      color: #6c757d;
+    }
+
+    .form-control:focus {
+      border-color: #007bff;
+      box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+    }
+
+    .submit-btn {
+      background: #007bff;
+      border: none;
+      padding: 14px;
+      font-size: 16px;
+      border-radius: 8px;
+      color: white;
+      transition: background 0.3s ease;
+    }
+
+    .submit-btn:hover {
+      background: #0056b3;
+    }
+
+    .form-section-title {
+      font-weight: 600;
+      font-size: 1.1rem;
+      margin-top: 30px;
+      margin-bottom: 15px;
+      color: #555;
+    }
+
+    .custom-file-upload {
+      padding: 0.5rem;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      display: block;
+      width: 100%;
+    }
+  </style>
   <body>
     <div class="container">
       <div class="row justify-content-center">
